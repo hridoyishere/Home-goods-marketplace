@@ -15,7 +15,7 @@ export default function ProfilePage() {
         <h1>A little space<br />that’s <em>just yours.</em></h1>
         <p>Sign in to keep track of the good things you’ve found and the orders on their way home.</p>
         <ProfileSignInForm />
-        <span className="profile-footnote">New here? We’ll create an account for you.</span>
+        <span className="profile-footnote">Your profile is saved in this browser.</span>
       </div>
       <div className="profile-benefits">
         <div><span>01</span><h2>Your orders</h2><p>Keep an eye on everything coming your way.</p></div>

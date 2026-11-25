@@ -5,7 +5,9 @@ import { categories, products } from "@/lib/products";
 
 export const metadata: Metadata = { title: "Search the collection" };
 
-type SearchParams = Promise<{ q?: string; category?: string; sort?: string }>;
+type SearchParams = Promise<{ q?: string; category?: string; sort?: string; page?: string }>;
+
+const PRODUCTS_PER_PAGE = 4;
 
 export default async function SearchPage({ searchParams }: { searchParams: SearchParams }) {
   const params = await searchParams;
@@ -19,6 +21,24 @@ export default async function SearchPage({ searchParams }: { searchParams: Searc
 
   if (params.sort === "new") results = [...results].reverse();
   if (params.sort === "popular") results = [...results].sort((a, b) => b.reviews - a.reviews);
+
+  const pageCount = Math.max(1, Math.ceil(results.length / PRODUCTS_PER_PAGE));
+  const requestedPage = Number.parseInt(params.page ?? "1", 10);
+  const currentPage = Number.isSafeInteger(requestedPage)
+    ? Math.min(Math.max(requestedPage, 1), pageCount)
+    : 1;
+  const pageResults = results.slice(
+    (currentPage - 1) * PRODUCTS_PER_PAGE,
+    currentPage * PRODUCTS_PER_PAGE,
+  );
+  const pageHref = (page: number) => {
+    const search = new URLSearchParams();
+    if (query) search.set("q", query);
+    if (category) search.set("category", category);
+    if (params.sort) search.set("sort", params.sort);
+    search.set("page", String(page));
+    return `/search?${search.toString()}`;
+  };
 
   const heading = query
     ? `Results for “${query}”`
@@ -62,13 +82,41 @@ export default async function SearchPage({ searchParams }: { searchParams: Searc
         </aside>
         <section className="search-results" aria-label="Search results">
           <div className="results-toolbar">
-            <span>{results.length} {results.length === 1 ? "piece" : "pieces"}</span>
-            <Link href="/search?sort=popular">Sort: Most loved</Link>
+            <span>{results.length} {results.length === 1 ? "piece" : "pieces"}{results.length > 0 && ` · Page ${currentPage} of ${pageCount}`}</span>
+            <Link href={`/search?${new URLSearchParams({
+              ...(query ? { q: query } : {}),
+              ...(category ? { category } : {}),
+              sort: "popular",
+            }).toString()}`}>Sort: Most loved</Link>
           </div>
           {results.length > 0 ? (
-            <div className="product-grid">
-              {results.map((product) => <ProductCard key={product.id} product={product} />)}
-            </div>
+            <>
+              <div className="product-grid">
+                {pageResults.map((product) => <ProductCard key={product.id} product={product} />)}
+              </div>
+              {pageCount > 1 && (
+                <nav className="pagination" aria-label="Search result pages">
+                  {currentPage > 1 ? (
+                    <Link className="pagination-arrow" href={pageHref(currentPage - 1)} aria-label="Previous page">← Previous</Link>
+                  ) : <span className="pagination-arrow is-disabled">← Previous</span>}
+                  <div className="pagination-pages">
+                    {Array.from({ length: pageCount }, (_, index) => index + 1).map((page) => (
+                      <Link
+                        key={page}
+                        className={`pagination-page${page === currentPage ? " is-current" : ""}`}
+                        href={pageHref(page)}
+                        aria-current={page === currentPage ? "page" : undefined}
+                      >
+                        {page}
+                      </Link>
+                    ))}
+                  </div>
+                  {currentPage < pageCount ? (
+                    <Link className="pagination-arrow" href={pageHref(currentPage + 1)} aria-label="Next page">Next →</Link>
+                  ) : <span className="pagination-arrow is-disabled">Next →</span>}
+                </nav>
+              )}
+            </>
           ) : (
             <div className="empty-results">
               <h2>Nothing just yet.</h2>

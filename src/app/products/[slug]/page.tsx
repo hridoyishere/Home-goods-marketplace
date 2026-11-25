@@ -40,7 +40,7 @@ export default async function ProductPage({ params }: PageProps) {
             <p>Colour <strong>Natural</strong></p>
             <div className="colour-swatch" aria-label="Natural colour selected" />
           </div>
-          <ProductPurchaseButton price={product.price} />
+          <ProductPurchaseButton slug={product.slug} price={product.price} />
           <p className="shipping-note"><Icon name="check" size={15} /> Complimentary shipping over $100</p>
           <div className="details-accordion">
             <details open>
