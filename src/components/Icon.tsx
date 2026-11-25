@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-type IconName = "search" | "user" | "arrow-right" | "arrow-left" | "menu" | "star" | "plus" | "check";
+type IconName = "search" | "user" | "bag" | "arrow-right" | "arrow-left" | "menu" | "star" | "plus" | "check";
 
 export default function Icon({
   name,
@@ -12,6 +12,7 @@ export default function Icon({
   const paths: Record<IconName, ReactNode> = {
     search: <><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></>,
     user: <><circle cx="12" cy="8" r="4" /><path d="M5 21a7 7 0 0 1 14 0" /></>,
+    bag: <><path d="M5 8h14l1 13H4L5 8Z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></>,
     "arrow-right": <><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></>,
     "arrow-left": <><path d="M19 12H5" /><path d="m11 18-6-6 6-6" /></>,
     menu: <><path d="M4 7h16M4 12h16M4 17h16" /></>,

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import Icon from "@/components/Icon";
+import { useCart } from "@/context/CartContext";
 
 const links = [
   { label: "New arrivals", href: "/search?sort=new" },
@@ -13,6 +14,7 @@ const links = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { cartCount } = useCart();
 
   return (
     <header className="site-header">
@@ -43,6 +45,10 @@ export default function Header() {
           </Link>
           <Link className="icon-button" href="/profile" aria-label="Your profile">
             <Icon name="user" />
+          </Link>
+          <Link className="icon-button cart-header-link" href="/cart" aria-label="Shopping cart, 1 item">
+            <Icon name="bag" />
+            {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </Link>
         </div>
       </div>

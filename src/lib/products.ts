@@ -201,3 +201,35 @@ export const formatPrice = (price: number) =>
 export function getProduct(slug: string) {
   return products.find((product) => product.slug === slug);
 }
+
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+
+export async function getProductBySlug(slug: string) {
+  try {
+    const response = await fetch(
+      `${API_URL}/api/products/${encodeURIComponent(slug)}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (response.status === 404) {
+      return null;
+    }
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch product");
+    }
+
+    const data = await response.json();
+    console.log(data.product)
+
+    // Adjust this if your backend wraps the product in { product: ... }
+    return data.product;
+  } catch (error) {
+    console.error("Product fetching error:", error);
+    return null
+  }
+}
