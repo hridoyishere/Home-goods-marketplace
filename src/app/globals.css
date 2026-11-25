@@ -205,6 +205,8 @@ h1 em, h2 em { font-weight: 400; }
 .pagination-arrow { color: #56584f; font-size: 10px; }
 .pagination-arrow:hover { color: var(--olive); }
 .pagination-arrow.is-disabled { color: #b6b5ad; }
+.pagination-arrow:disabled { color: #b6b5ad; cursor: not-allowed; }
+.home-pagination { margin-top: 33px; }
 
 /* Product detail */
 .product-page { padding-top: 29px; padding-bottom: 100px; }

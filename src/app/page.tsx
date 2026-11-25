@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import HeroCarousel from "@/components/HeroCarousel";
-import ProductCard from "@/components/ProductCard";
+import HomeProductGrid from "@/components/HomeProductGrid";
 import Icon from "@/components/Icon";
-import { categories, products } from "@/lib/products";
+import { categories } from "@/lib/products";
 
 export default function Home() {
   return (
@@ -43,9 +43,7 @@ export default function Home() {
             </div>
             <Link className="text-link" href="/search?sort=popular">Shop bestsellers <Icon name="arrow-right" size={16} /></Link>
           </div>
-          <div className="product-grid">
-            {products.slice(0, 4).map((product) => <ProductCard key={product.id} product={product} />)}
-          </div>
+          <HomeProductGrid />
         </div>
       </section>
 
