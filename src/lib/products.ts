@@ -14,6 +14,40 @@ export type Product = {
   details: string[];
 };
 
+
+// export interface Product {
+//   id: string;
+//   slug: string;
+//   name: string;
+//   category: string;
+//   price: number;
+//   rating: number;
+//   reviews: number;
+//   badge: string | null;
+//   image: string;
+//   images: string[];
+//   description: string;
+//   details: string[];
+//   created_at: string;
+//   updated_at: string;
+// }
+
+export interface Pagination {
+  currentPage: number;
+  limit: number;
+  totalProducts: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
+export interface ProductResponse {
+  success: boolean;
+  products: Product[];
+  pagination: Pagination;
+}
+
+
 const image = (id: string, width = 900) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=85`;
 
